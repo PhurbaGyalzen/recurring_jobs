@@ -6,7 +6,7 @@ import logging
 
 app = FastAPI()
 
-# create a SQLite connection
+# create a Mysql connection
 engine = create_engine("mysql+mysqlconnector://root:admin@localhost/cron")
 
 jobstore = SQLAlchemyJobStore(engine=engine)
@@ -28,7 +28,7 @@ def my_task():
 
 @app.post('/schedule')
 async def schedule_task():
-  
+    # Note: you can also use cron trigger format instead of interval
     job = scheduler.add_job(my_task, 'interval', seconds=5, name="seconds 5")
     return {"id": job.id}
 
